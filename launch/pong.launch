@@ -1,0 +1,5 @@
+<launch>
+    <node name="pong" pkg="turtle_pong" type="node" output="screen"/>
+    <node name="ball" pkg="turtle_pong" type="turtle_pong_ball" output="screen"/>
+    <node name="key" pkg="turtle_pong" type="turtle_pong_key" output="screen"/>
+</launch>
