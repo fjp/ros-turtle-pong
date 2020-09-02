@@ -133,6 +133,7 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_node src/pong.cpp)
 add_executable(${PROJECT_NAME}_ball src/ball.cpp)
+add_executable(${PROJECT_NAME}_key src/turtle_teleop_key.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -149,6 +150,9 @@ target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
 )
 target_link_libraries(${PROJECT_NAME}_ball
+  ${catkin_LIBRARIES}
+)
+target_link_libraries(${PROJECT_NAME}_key
   ${catkin_LIBRARIES}
 )
 
