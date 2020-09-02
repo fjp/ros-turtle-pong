@@ -3,8 +3,8 @@
 #include <turtlesim/Pose.h>
 
 // Service includes
-#include <turtlesim/Spawn.h>
 #include <std_srvs/Empty.h>
+#include <turtlesim/Spawn.h>
 #include <turtlesim/SetPen.h>
 #include <turtlesim/TeleportAbsolute.h>
 
@@ -192,7 +192,7 @@ void cBall::move()
 void cBall::poseCallback(const turtlesim::PoseConstPtr& pose)
 {
     pose_ = pose;
-    ROS_INFO("x: %f, y: %f, theta: %f, linear_vel: %f, angular_vel: %f, dir: %i", 
+    ROS_INFO_THROTTLE(1, "x: %f, y: %f, theta: %f, linear_vel: %f, angular_vel: %f, dir: %i", 
             pose_->x, pose_->y, pose_->theta, pose_->linear_velocity, pose_->angular_velocity, direction_);
 };
 
@@ -231,13 +231,8 @@ void cBall::randomDirection()
 int main(int argc, char** argv)
  {
     ros::init(argc, argv, "turtle_pong_ball");
-    ROS_INFO("Reset");
 
     ros::NodeHandle nh;
-    
-    std_srvs::Empty empty;
-    ros::service::call<std_srvs::Empty>("/reset", empty);
-    ROS_INFO("ResetCalled");
 
     turtlesim::Spawn spawn;
     spawn.request.name = "ball";
