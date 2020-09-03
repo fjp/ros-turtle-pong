@@ -42,6 +42,7 @@ public:
     void randomDirection();
 
     void checkPlayerCollision();
+    void updateDirection();
 
 private:
     ros::NodeHandle& nh_;
@@ -82,6 +83,35 @@ void cBall::penOff(bool off)
     ros::service::call("/ball/set_pen", set_pen);
 }
 
+void cBall::updateDirection()
+{
+    double theta = pose_->theta;
+    if (0.0 == theta)
+    {
+        direction_ = RIGHT;
+    }
+    else if (0.0 < theta && theta < M_PI_2)
+    {
+        direction_ = UP_RIGHT;
+    }
+    else if (M_PI_2 < theta && theta < M_PI)
+    {
+        direction_ = UP_LEFT;
+    }
+    else if (M_PI == theta)
+    {
+        direction_ = LEFT;
+    }
+    else if (-M_PI < theta && theta < -M_PI_2)
+    {
+        direction_ = DOWN_LEFT;
+    }
+    else if (-M_PI_2 < theta && theta < 0.0)
+    {
+        direction_ = DOWN_RIGHT;
+    }
+}
+
 void cBall::move()
 {
 
@@ -103,6 +133,7 @@ void cBall::move()
 
 
     checkPlayerCollision();
+    updateDirection();
 
     // Update pose if ball hits the wall
     double new_theta = 0.0;
@@ -112,13 +143,13 @@ void cBall::move()
         {
             new_theta = 2.0*M_PI - theta;
             setPoseAbs(x, y, new_theta);
-            direction_ = DOWN_LEFT;
+            //direction_ = DOWN_LEFT;
         }
         if (direction_ == UP_RIGHT)
         {
             new_theta = 2.0*M_PI-theta;
             setPoseAbs(x, y, new_theta);
-            direction_ = DOWN_RIGHT;
+            //direction_ = DOWN_RIGHT;
         }
     }
 
@@ -128,13 +159,13 @@ void cBall::move()
         {
             new_theta = -theta;
             setPoseAbs(x, y, new_theta);
-            direction_ = UP_LEFT;
+            //direction_ = UP_LEFT;
         }
         if (direction_ == DOWN_RIGHT)
         {
             new_theta = -theta;
             setPoseAbs(x, y, new_theta);
-            direction_ = UP_RIGHT;
+            //direction_ = UP_RIGHT;
         }
     }
 
@@ -144,13 +175,13 @@ void cBall::move()
         {
             new_theta = M_PI - theta;
             setPoseAbs(x, y, new_theta);
-            direction_ = UP_LEFT;
+            //direction_ = UP_LEFT;
         }
         if (direction_ == DOWN_RIGHT)
         {
             new_theta = -M_PI-theta;
             setPoseAbs(x, y, new_theta);
-            direction_ = DOWN_LEFT;
+            //direction_ = DOWN_LEFT;
         }
     }
     
@@ -160,13 +191,13 @@ void cBall::move()
         {
             new_theta = M_PI - theta;
             setPoseAbs(x, y, new_theta);
-            direction_ = UP_RIGHT;
+            //direction_ = UP_RIGHT;
         }
         if (direction_ == DOWN_LEFT)
         {
             new_theta = -(M_PI + theta);
             setPoseAbs(x, y, new_theta);
-            direction_ = DOWN_RIGHT;
+            //direction_ = DOWN_RIGHT;
         }
     }
 };
