@@ -11,10 +11,14 @@
 # include <windows.h>
 #endif
 
+// Ascii codes for small keyboard characters
+// https://en.wikipedia.org/wiki/ASCII
 #define KEYCODE_RIGHT 0x43
 #define KEYCODE_LEFT 0x44
 #define KEYCODE_UP 0x41
 #define KEYCODE_DOWN 0x42
+#define KEYCODE_W 0x77
+#define KEYCODE_S 0x73
 #define KEYCODE_B 0x62
 #define KEYCODE_C 0x63
 #define KEYCODE_D 0x64
@@ -158,13 +162,14 @@ class TeleopTurtle
 public:
   TeleopTurtle();
   void keyLoop();
+  void getKeyPress(char& c);
 
 private:
 
   
   ros::NodeHandle nh_;
   double linear_, angular_, l_scale_, a_scale_;
-  ros::Publisher twist_pub_;
+  ros::Publisher twist_left_pub_, twist_right_pub_;
   
 };
 
@@ -177,7 +182,8 @@ TeleopTurtle::TeleopTurtle():
   nh_.param("scale_angular", a_scale_, a_scale_);
   nh_.param("scale_linear", l_scale_, l_scale_);
 
-  twist_pub_ = nh_.advertise<geometry_msgs::Twist>("turtle_right/cmd_vel", 1);
+  twist_left_pub_ = nh_.advertise<geometry_msgs::Twist>("turtle_left/cmd_vel", 1);
+  twist_right_pub_ = nh_.advertise<geometry_msgs::Twist>("turtle_right/cmd_vel", 1);
 }
 
 void quit(int sig)
@@ -203,6 +209,23 @@ int main(int argc, char** argv)
 }
 
 
+void TeleopTurtle::getKeyPress(char& c)
+{
+  try
+  {
+    input.readOne(&c);
+  }
+  catch (const std::runtime_error &)
+  {
+    perror("read():");
+    return;
+  }
+
+  linear_=angular_=0;
+  ROS_DEBUG("value: 0x%02X\n", c);
+}
+
+
 void TeleopTurtle::keyLoop()
 {
   char c;
@@ -216,31 +239,10 @@ void TeleopTurtle::keyLoop()
   for(;;)
   {
     // get the next event from the keyboard  
-    try
-    {
-      input.readOne(&c);
-    }
-    catch (const std::runtime_error &)
-    {
-      perror("read():");
-      return;
-    }
-
-    linear_=angular_=0;
-    ROS_DEBUG("value: 0x%02X\n", c);
+    getKeyPress(c);
   
     switch(c)
     {
-      case KEYCODE_LEFT:
-        ROS_DEBUG("LEFT");
-        angular_ = 1.0;
-        dirty = true;
-        break;
-      case KEYCODE_RIGHT:
-        ROS_DEBUG("RIGHT");
-        angular_ = -1.0;
-        dirty = true;
-        break;
       case KEYCODE_UP:
         ROS_DEBUG("UP");
         linear_ = 1.0;
@@ -248,6 +250,16 @@ void TeleopTurtle::keyLoop()
         break;
       case KEYCODE_DOWN:
         ROS_DEBUG("DOWN");
+        linear_ = -1.0;
+        dirty = true;
+        break;
+      case KEYCODE_W:
+        ROS_DEBUG("W");
+        linear_ = 1.0;
+        dirty = true;
+        break;
+      case KEYCODE_S:
+        ROS_DEBUG("S");
         linear_ = -1.0;
         dirty = true;
         break;
@@ -262,11 +274,18 @@ void TeleopTurtle::keyLoop()
     twist.linear.x = l_scale_*linear_;
     if(dirty ==true)
     {
-      twist_pub_.publish(twist);    
+      if (KEYCODE_W == c || KEYCODE_S == c)
+      {
+        twist_left_pub_.publish(twist);
+      }
+      else if (KEYCODE_UP == c || KEYCODE_DOWN == c)
+      {
+        twist_right_pub_.publish(twist);
+      }
       dirty=false;
     }
-  }
 
+  }
 
   return;
 }
