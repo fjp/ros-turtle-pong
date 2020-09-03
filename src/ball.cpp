@@ -43,6 +43,7 @@ public:
 
     void checkPlayerCollision();
     void updateDirection();
+    double randomAngle();
 
 private:
     ros::NodeHandle& nh_;
@@ -120,7 +121,7 @@ void cBall::move()
         ROS_INFO("Pose not yet received");
         setPoseAbs(3.0, 3.0, -0.5);
         
-        direction_ = DOWN_RIGHT;
+        //direction_ = DOWN_RIGHT;
         return;
     }    
 
@@ -219,12 +220,19 @@ void cBall::checkPlayerCollision()
 
     double delta_x = 0.2;
     double delta_y = 0.5;
+    double paddle_size = 2.0* delta_y;
+    double max_bounce_angle = 5*M_PI/12;
 
     if (left_x - delta_x < ball_x && ball_x < left_x + delta_x)
     {
         if (left_y - delta_y < ball_y && ball_y < left_y + delta_y)
         {
-            setPoseAbs(ball_x, ball_y, 0.1);
+            // https://gamedev.stackexchange.com/questions/4253/in-pong-how-do-you-calculate-the-balls-direction-when-it-bounces-off-the-paddl#:~:text=Take%20the%20relative%20intersection%20and,12%20radians%20(75%20degrees).
+            double rel_intersect_y = (left_y + delta_y) - ball_y;
+            double norm_rel_intersect_y = rel_intersect_y / paddle_size;
+            double bounce_angle = norm_rel_intersect_y * max_bounce_angle;
+            ROS_INFO("Bounce angle: %f", bounce_angle);
+            setPoseAbs(ball_x, ball_y, bounce_angle);
         }
     }
 
@@ -233,7 +241,16 @@ void cBall::checkPlayerCollision()
     {
         if (right_y - delta_y < ball_y && ball_y < right_y + delta_y)
         {
-            setPoseAbs(ball_x, ball_y, M_PI + 0.1);
+            double rel_intersect_y = (right_y + delta_y) - ball_y;
+            double norm_rel_intersect_y = rel_intersect_y / paddle_size;
+            double bounce_angle = norm_rel_intersect_y * max_bounce_angle;
+            if (bounce_angle > 0)
+                bounce_angle += M_PI_2;
+            else
+                bounce_angle -= M_PI_2;
+            
+            ROS_INFO("Bounce angle: %f", bounce_angle);
+            setPoseAbs(ball_x, ball_y, bounce_angle);
         }
     }
 }
@@ -285,10 +302,21 @@ void cBall::setVel(double x, double theta)
 }
 
 
-void cBall::randomDirection()
+double cBall::randomAngle()
 {
-    direction_ = (eDir)((rand() % 6) + 1);
+    double angle = ((double)rand() / (double)RAND_MAX);
+    double r = ((double)rand() / (double)RAND_MAX);
+    if (r > 0.5)
+    {
+        return angle * M_PI;
+    }
+    else
+    {
+        return angle * -M_PI;
+    }
+    
 }
+
 
 
 
