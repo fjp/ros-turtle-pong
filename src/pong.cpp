@@ -16,7 +16,7 @@
 
 void colorSensorCallback(const turtlesim::ColorConstPtr& color)
 {
-    ROS_INFO_THROTTLE(0.1, "Color received (r,g,b) = (%i,%i,%i)", color->r, color->g, color->b);
+    //ROS_INFO_THROTTLE(0.1, "Color received (r,g,b) = (%i,%i,%i)", color->r, color->g, color->b);
 }
 
 
