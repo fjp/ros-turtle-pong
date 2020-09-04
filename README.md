@@ -22,4 +22,4 @@ This is the first release (version 0.0.0). The following features are planned an
 
 The short video below gives more insights on what is currently implemented:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/i83dNyfm_QE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Turtle Pong YouTube](ttps://www.youtube.com/i83dNyfm_QE/0.jpg)](ttps://www.youtube.com/i83dNyfm_QE)
