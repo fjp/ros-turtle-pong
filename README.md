@@ -27,4 +27,4 @@ This is the first release (version 0.0.0). The following features are planned an
 
 The short video below gives more insights on what is currently implemented:
 
-[![Turtle Pong YouTube](ttps://www.youtube.com/i83dNyfm_QE/0.jpg)](ttps://www.youtube.com/i83dNyfm_QE)
+[![Turtle Pong YouTube](http://img.youtube.com/vi/i83dNyfm_QE/0.jpg)](https://youtu.be/i83dNyfm_QE)
