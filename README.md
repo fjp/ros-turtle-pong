@@ -8,6 +8,11 @@ implements the Pong arcade video game for the Robot Operating System (ROS 1 Noet
 To learn how the package was created, please read the [documentation](https://fjp.at/ros/turtle-pong).
 
 
+## ROS Node Graph
+
+![rqt node graph](docs/rosgraph.svg)
+
+
 ## Current Version and Missing Features
 
 This is the first release (version 0.0.0). The following features are planned and contributions to them or new features and code improvements are welcome.
