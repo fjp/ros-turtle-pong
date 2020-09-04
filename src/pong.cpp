@@ -22,7 +22,7 @@ void colorSensorCallback(const turtlesim::ColorConstPtr& color)
 
 void spawnPlayerTurtle(std::string name, double x, double y, double theta)
 {
-    ROS_INFO("Spawn %s", name);
+    ROS_INFO("Spawn %s", name.c_str());
     turtlesim::Spawn spawn;
     spawn.request.name = name.c_str();
     spawn.request.x = x;
