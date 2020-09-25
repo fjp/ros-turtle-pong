@@ -7,6 +7,35 @@ implements the Pong arcade video game for the Robot Operating System (ROS 1 Noet
 
 To learn how the package was created, please read the [documentation](https://fjp.at/ros/turtle-pong).
 
+## Usage
+
+To use the `turtle_pong` package clone this repository into the `src` folder of your catkin workspace:
+
+```console
+fjp@ubuntu:/home/fjp/catkin_ws/src$ git clone https://github.com/fjp/ros-turtle-pong.git
+```
+
+Then build the workspace with `catking-tools` or `catkin_make` and source the new package:
+
+```console
+# catkin-tools:
+fjp@ubuntu:/home/fjp/catkin_ws$ catkin build
+# or use
+fjp@ubuntu:/home/fjp/catkin_ws$ catkin_make
+# source your workspace using the setup.bash or setup.zsh depening on your shell
+fjp@ubuntu:/home/fjp/catkin_ws$ source devel/setup.bash
+fjp@ubuntu:/home/fjp/catkin_ws$ source devel/setup.zsh
+```
+
+Finally start `roscore`, run `turtlesim` and `pong.launch`:
+
+```console
+roscore
+rosrun turtlesim turtlesim_node
+roslaunch turtle_pong pong.launch
+```
+
+Note that each of the three commands above should be executed from another terminal so that it will run in its own process.
 
 ## ROS Node Graph
 
