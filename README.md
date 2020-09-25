@@ -37,6 +37,8 @@ roslaunch turtle_pong pong.launch
 
 Note that each of the three commands above should be executed from another terminal so that it will run in its own process.
 
+The game can be played with the w/s keys and the up/down arrow keys to control the left and right player (turtle) respectively.
+
 ## ROS Node Graph
 
 ![rqt node graph](docs/rosgraph.svg)
